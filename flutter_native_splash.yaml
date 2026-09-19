@@ -1,0 +1,9 @@
+flutter_native_splash:
+  # الإعدادات الأساسية لجميع الأجهزة والنسخ القديمة من أندرويد و iOS
+  color: "#ffffff"
+  image: assets/images/splash.png
+
+  # الإعدادات الخاصة بـ Android 12 فما فوق
+  android_12:
+    color: "#ffffff"
+    image: assets/images/splash.png
