@@ -6,8 +6,6 @@ class ApiConstants {
   static const String signup = "api/auth/register";
 }
 
-
-
 class ApiErrors {
   static const String badRequestError = "badRequestError";
   static const String noContent = "noContent";
