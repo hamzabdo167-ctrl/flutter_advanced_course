@@ -56,6 +56,7 @@ class _EmailAndPasswordState extends State<EmailAndPassword> {
         children: [
           AppTextFormField(
             hintText: 'Email',
+            keyboardType: TextInputType.emailAddress,
             validator: (value) {
               if (value == null ||
                   value.isEmpty ||

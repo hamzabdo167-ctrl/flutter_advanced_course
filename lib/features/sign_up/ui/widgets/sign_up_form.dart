@@ -79,6 +79,7 @@ class _SignupFormState extends State<SignupForm> {
           verticalSpace(18),
           AppTextFormField(
             hintText: 'Email',
+            keyboardType: TextInputType.emailAddress,
             validator: (value) {
               if (value == null ||
                   value.isEmpty ||

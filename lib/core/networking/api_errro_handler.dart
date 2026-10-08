@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, constant_identifier_names, unreachable_switch_case
+// ignore_for_file: avoid_print, non_constant_identifier_names, constant_identifier_names, unreachable_switch_case
 
 import 'package:dio/dio.dart';
 
@@ -142,12 +142,24 @@ extension DataSourceExtension on DataSource {
 class ErrorHandler implements Exception {
   late ApiErrorModel apiErrorModel;
 
+  // ErrorHandler.handle(dynamic error) {
+  //   if (error is DioException) {
+  //     // dio error so its an error from response of the API or from dio itself
+  //     apiErrorModel = _handleError(error);
+  //   } else {
+  //     // default error
+  //     apiErrorModel = DataSource.DEFAULT.getFailure();
+  //   }
+  // }
+
   ErrorHandler.handle(dynamic error) {
+    print("================ API ERROR DETECTED ================");
+    print(error); // السطر ده هيطبع لك السبب الحقيقي في الـ Terminal
+    print("====================================================");
+
     if (error is DioException) {
-      // dio error so its an error from response of the API or from dio itself
       apiErrorModel = _handleError(error);
     } else {
-      // default error
       apiErrorModel = DataSource.DEFAULT.getFailure();
     }
   }
@@ -179,8 +191,10 @@ ApiErrorModel _handleError(DioException error) {
       }
     case DioExceptionType.cancel:
       return DataSource.CANCEL.getFailure();
+    // case DioExceptionType.connectionError:
+    //   return DataSource.DEFAULT.getFailure();
     case DioExceptionType.connectionError:
-      return DataSource.DEFAULT.getFailure();
+      return DataSource.NO_INTERNET_CONNECTION.getFailure();
     case DioExceptionType.badCertificate:
       return DataSource.DEFAULT.getFailure();
     case DioExceptionType.badResponse:

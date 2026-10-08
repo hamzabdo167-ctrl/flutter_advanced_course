@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - flutter_advanced_course
+  workflow_dispatch:
 
 jobs:
   distribute_to_firebase:
@@ -22,15 +23,19 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+          cache: true
 
       - name: Install Dependencies
         run: flutter pub get
 
+      - name: Build Android APK
+        run: flutter build apk --release --flavor production -t lib/main_production.dart
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.2.3"
-          bundler-cache: false
+          ruby-version: "4.0.0"
+          bundler-cache: true
           working-directory: android
 
       - name: Install Bundler Gems
