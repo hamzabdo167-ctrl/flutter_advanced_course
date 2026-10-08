@@ -16,6 +16,7 @@ class LoginCubit extends Cubit<LoginState> {
 
   void emitLoginStates() async {
     emit(const LoginState.loading());
+
     final response = await _loginRepo.login(
       LoginRequestBody(
         email: emailController.text,
@@ -24,8 +25,8 @@ class LoginCubit extends Cubit<LoginState> {
     );
 
     response.when(
-      success: (LoginResponse) {
-        emit(LoginState.success(LoginResponse));
+      success: (data) {
+        emit(LoginState.success(data));
       },
       failure: (error) {
         emit(LoginState.error(error: error.apiErrorModel.message ?? ''));

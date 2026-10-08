@@ -1,9 +1,12 @@
 class ApiConstants {
-  static const String apiBaseUrl = "https://vcare.integration25.com/api/";
+  static const String apiBaseUrl =
+      "https://f8429a13-2707-446d-a5af-3d9c68beb809.mock.pstmn.io/";
 
-  static const String login = "auth/login";
-  static const String signup = "auth/register";
+  static const String login = "api/auth/login";
+  static const String signup = "api/auth/register";
 }
+
+
 
 class ApiErrors {
   static const String badRequestError = "badRequestError";
@@ -15,7 +18,7 @@ class ApiErrors {
   static const String internalServerError = "internalServerError";
   static const String unknownError = "unknownError";
   static const String timeoutError = "timeoutError";
-  static const String defaultError = "defaultError";
+  static const String defaultError = "حدث خطأ غير متوقع، برجاء المحاولة لاحقاً";
   static const String cacheError = "cacheError";
   static const String noInternetError = "noInternetError";
   static const String loadingMessage = "loading_message";

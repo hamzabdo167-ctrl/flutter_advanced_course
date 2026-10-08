@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_new_app/features/home/ui/widgets/doctors_blue_container.dart';
+import 'package:my_new_app/features/home/ui/widgets/home_top_bar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -6,9 +8,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Home Screen')),
-      body: Center(
-        child: Text('THIS IS HOME SCREEN !!!!!!!!!!!!!!!!!!!!!!!!!!!'),
+      body: SafeArea(
+        child: Column(children: [const HomeTopBar(), DoctorsBlueContainer()]),
       ),
     );
   }

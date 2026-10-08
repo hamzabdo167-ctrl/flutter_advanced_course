@@ -13,7 +13,7 @@ class _ApiService implements ApiService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://vcare.integration25.com/api/';
+    baseUrl ??= 'https://f8429a13-2707-446d-a5af-3d9c68beb809.mock.pstmn.io/';
   }
 
   final Dio _dio;
@@ -35,7 +35,7 @@ class _ApiService implements ApiService {
     )
             .compose(
               _dio.options,
-              'auth/login',
+              'api/auth/login',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -63,7 +63,7 @@ class _ApiService implements ApiService {
     )
             .compose(
               _dio.options,
-              'auth/register',
+              'api/auth/register',
               queryParameters: queryParameters,
               data: _data,
             )
