@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart'; // 1. لا تنسَ استيراد المكتبة
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_new_app/core/helpers/constans.dart';
 import 'package:my_new_app/core/routing/app_router.dart';
 import 'package:my_new_app/core/routing/routes.dart';
 import 'package:my_new_app/core/theming/colors.dart';
@@ -10,20 +11,19 @@ class DocApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 2. استخدام ScreenUtilInit وتغليف MaterialApp بها
     return ScreenUtilInit(
-      designSize: const Size(375, 812), // تعديل مقاس العرض إلى 375
+      designSize: const Size(375, 812),
       minTextAdapt: true,
       child: MaterialApp(
-          title: 'Doc App',
-          theme: ThemeData(
-            primaryColor: ColorsManager.mainBlue,
-            scaffoldBackgroundColor: Colors.white,
-          ),
-          debugShowCheckedModeBanner: false,
-          initialRoute: Routes.onBoardingScreen,
-          onGenerateRoute: appRouter.generateRoute,
-      )
+        title: 'Doc App',
+        theme: ThemeData(
+          primaryColor: ColorsManager.mainBlue,
+          scaffoldBackgroundColor: Colors.white,
+        ),
+        debugShowCheckedModeBanner: false,
+        initialRoute: isLoggedInUser ? Routes.homeScreen : Routes.loginScreen,
+        onGenerateRoute: appRouter.generateRoute,
+      ),
     );
   }
 }

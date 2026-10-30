@@ -1,4 +1,3 @@
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:my_new_app/core/networking/api_errro_handler.dart';
 import 'package:my_new_app/features/home/data/models/specializations_response_model.dart';

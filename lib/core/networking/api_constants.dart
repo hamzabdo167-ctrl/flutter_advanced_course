@@ -1,9 +1,12 @@
 class ApiConstants {
   static const String apiBaseUrl =
-      "https://f8429a13-2707-446d-a5af-3d9c68beb809.mock.pstmn.io/";
+      "https://f8429a13-2707-446d-a5af-3d9c68beb809.mock.pstmn.io/specializations/index";
 
   static const String login = "api/auth/login";
   static const String signup = "api/auth/register";
+
+  // جرب تكتبها زي ما هي مكتوبة في Postman Mock عندك بالظبط:
+  static const String specialization = "specializations/index";
 }
 
 class ApiErrors {

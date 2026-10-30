@@ -37,11 +37,12 @@ class AppRouter {
           ),
         );
 
+      // في ملف app_router.dart
       case Routes.homeScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) =>
-                HomeCubit(getIt(), homeRepo: getIt())..getSpecializations(),
+            // التعديل هنا: إضافة ..getSpecializations()
+            create: (context) => getIt<HomeCubit>()..getSpecializations(),
             child: const HomeScreen(),
           ),
         );

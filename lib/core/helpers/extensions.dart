@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 
 extension Navigation on BuildContext {
@@ -14,4 +16,8 @@ extension Navigation on BuildContext {
   }
 
   void pop() => Navigator.of(this).pop();
+}
+
+extension StringExtensions on String {
+  bool isNullOrEmpty() => this == null || this == '';
 }

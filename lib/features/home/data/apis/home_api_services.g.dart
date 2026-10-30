@@ -1,7 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: unused_element_parameter
-
 part of 'home_api_services.dart';
 
 // **************************************************************************
@@ -15,7 +13,8 @@ class _HomeApiServices implements HomeApiServices {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://f8429a13-2707-446d-a5af-3d9c68beb809.mock.pstmn.io/';
+    baseUrl ??=
+        'https://f8429a13-2707-446d-a5af-3d9c68beb809.mock.pstmn.io/specializations/index';
   }
 
   final Dio _dio;
