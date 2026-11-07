@@ -33,7 +33,6 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this._homeRepo) : super(const HomeState.initial());
 
   void getSpecializations() async {
-    print('=== GET SPECIALIZATIONS CALLED ==='); // أضف هذا السطر
     emit(const HomeState.specializationLoading());
 
     final response = await _homeRepo.getSpecializations();
@@ -42,7 +41,6 @@ class HomeCubit extends Cubit<HomeState> {
         emit(HomeState.specializationSuccess(specializationsResponseModel));
       },
       failure: (errorHandler) {
-        print("ERROR: $errorHandler");
         emit(HomeState.specializationError(errorHandler));
       },
     );
