@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:my_new_app/core/helpers/spacing.dart';
+import 'package:my_new_app/features/home/data/models/specializations_response_model.dart';
 import 'package:my_new_app/features/home/logic/home_cubit.dart';
 import 'package:my_new_app/features/home/logic/home_state.dart';
 import 'doctors_list_view.dart';
@@ -21,18 +22,19 @@ class SpecializationsAndDoctorsBlocBuilder extends StatelessWidget {
           current is SpecializationError,
       builder: (context, state) {
         return state.maybeWhen(
-            specializationLoading: () {
-              return setupLoading();
-            },
-            specializationSuccess: (specializationsResponseModel) {
-              var specializationsList =
-                  specializationsResponseModel.specializationDataList;
-              return setupSuccess(specializationsList);
-            },
-            specializationError: (errorHandler) => setupError(),
-            orElse: () {
-              return const SizedBox.shrink();
-            });
+          specializationLoading: () {
+            return setupLoading();
+          },
+          specializationSuccess: (specializationsResponseModel) {
+            var specializationsList =
+                specializationsResponseModel.specializationDataList;
+            return setupSuccess(specializationsList);
+          },
+          specializationError: (errorHandler) => setupError(),
+          orElse: () {
+            return const SizedBox.shrink();
+          },
+        );
       },
     );
   }
@@ -40,22 +42,19 @@ class SpecializationsAndDoctorsBlocBuilder extends StatelessWidget {
   Widget setupLoading() {
     return const SizedBox(
       height: 100,
-      child: Center(
-        child: CircularProgressIndicator(),
-      ),
+      child: Center(child: CircularProgressIndicator()),
     );
   }
 
-  Widget setupSuccess(specializationsList) {
+  Widget setupSuccess(List<SpecializationsData?>? specializationsList) {
+    final list = specializationsList ?? [];
     return Expanded(
       child: Column(
         children: [
-          DoctorsSpecialityListView(
-            specializationDataList: specializationsList ?? [], specializationsDataList: [],
-          ),
+          DoctorsSpecialityListView(specializationsDataList: list),
           verticalSpace(8),
           DoctorsListView(
-            doctorsList: specializationsList?[0]?.doctorsList,
+            doctorsList: list.isNotEmpty ? list[0]?.doctorsList : [],
           ),
         ],
       ),

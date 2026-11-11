@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:my_new_app/core/helpers/constans.dart';
 import 'package:my_new_app/core/helpers/shared_pref_helper.dart';
@@ -15,13 +17,27 @@ class DioFactory {
       dio = Dio();
       dio!
         ..options.connectTimeout = timeOut
-        ..options.receiveTimeout = timeOut;
+        ..options.receiveTimeout = timeOut
+        ..options.responseType = ResponseType.json;
+
+      // لو السيرفر رجّع JSON بـ content-type غلط (text/html)،
+      // الـ transformer ده بيحوّله لـ Map برضه
+      dio!.transformer = BackgroundTransformer()
+        ..jsonDecodeCallback = (text) => _safeJsonDecode(text);
 
       addDioHeaders();
       addDioInterceptor();
       return dio!;
     } else {
       return dio!;
+    }
+  }
+
+  static dynamic _safeJsonDecode(String text) {
+    try {
+      return jsonDecode(text);
+    } catch (_) {
+      return text;
     }
   }
 

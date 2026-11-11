@@ -3,16 +3,17 @@ import 'package:my_new_app/features/home/data/models/specializations_response_mo
 import 'package:my_new_app/features/home/ui/widgets/doctors_list_view_item.dart';
 
 class DoctorsListView extends StatelessWidget {
-  final List<Doctors?> doctorsList;
+  final List<Doctors?>? doctorsList;
   const DoctorsListView({super.key, required this.doctorsList});
 
   @override
   Widget build(BuildContext context) {
+    final list = doctorsList ?? [];
     return Expanded(
       child: ListView.builder(
-        itemCount: doctorsList.length,
+        itemCount: list.length,
         itemBuilder: (context, index) {
-          return DoctorsListViewItem(doctorModel: doctorsList[index]);
+          return DoctorsListViewItem(doctorModel: list[index]);
         },
       ),
     );

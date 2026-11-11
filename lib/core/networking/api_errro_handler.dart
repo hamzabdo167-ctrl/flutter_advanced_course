@@ -1,11 +1,10 @@
-// ignore_for_file: avoid_print, non_constant_identifier_names, constant_identifier_names, unreachable_switch_case
+// ignore_for_file: avoid_print, non_constant_identifier_names, constant_identifier_names
 
 import 'package:dio/dio.dart';
 
 import 'api_constants.dart';
 import 'api_error_model.dart';
 
-// TODO: wallahy I will refactor this .. Omar Ahmed
 enum DataSource {
   NO_CONTENT,
   BAD_REQUEST,
@@ -19,19 +18,18 @@ enum DataSource {
   SEND_TIMEOUT,
   CACHE_ERROR,
   NO_INTERNET_CONNECTION,
-  // API_LOGIC_ERROR,
   DEFAULT,
 }
 
 class ResponseCode {
-  static const int SUCCESS = 200; // success with data
-  static const int NO_CONTENT = 201; // success with no data (no content)
-  static const int BAD_REQUEST = 400; // failure, API rejected request
-  static const int UNAUTORISED = 401; // failure, user is not authorised
-  static const int FORBIDDEN = 403; //  failure, API rejected request
-  static const int INTERNAL_SERVER_ERROR = 500; // failure, crash in server side
-  static const int NOT_FOUND = 404; // failure, not found
-  static const int API_LOGIC_ERROR = 422; // API , lOGIC ERROR
+  static const int SUCCESS = 200;
+  static const int NO_CONTENT = 201;
+  static const int BAD_REQUEST = 400;
+  static const int UNAUTORISED = 401;
+  static const int FORBIDDEN = 403;
+  static const int INTERNAL_SERVER_ERROR = 500;
+  static const int NOT_FOUND = 404;
+  static const int API_LOGIC_ERROR = 422;
 
   // local status code
   static const int CONNECT_TIMEOUT = -1;
@@ -44,18 +42,12 @@ class ResponseCode {
 }
 
 class ResponseMessage {
-  static const String NO_CONTENT =
-      ApiErrors.noContent; // success with no data (no content)
-  static const String BAD_REQUEST =
-      ApiErrors.badRequestError; // failure, API rejected request
-  static const String UNAUTORISED =
-      ApiErrors.unauthorizedError; // failure, user is not authorised
-  static const String FORBIDDEN =
-      ApiErrors.forbiddenError; //  failure, API rejected request
-  static const String INTERNAL_SERVER_ERROR =
-      ApiErrors.internalServerError; // failure, crash in server side
-  static const String NOT_FOUND =
-      ApiErrors.notFoundError; // failure, crash in server side
+  static const String NO_CONTENT = ApiErrors.noContent;
+  static const String BAD_REQUEST = ApiErrors.badRequestError;
+  static const String UNAUTORISED = ApiErrors.unauthorizedError;
+  static const String FORBIDDEN = ApiErrors.forbiddenError;
+  static const String INTERNAL_SERVER_ERROR = ApiErrors.internalServerError;
+  static const String NOT_FOUND = ApiErrors.notFoundError;
 
   // local status code
   static String CONNECT_TIMEOUT = ApiErrors.timeoutError;
@@ -142,19 +134,9 @@ extension DataSourceExtension on DataSource {
 class ErrorHandler implements Exception {
   late ApiErrorModel apiErrorModel;
 
-  // ErrorHandler.handle(dynamic error) {
-  //   if (error is DioException) {
-  //     // dio error so its an error from response of the API or from dio itself
-  //     apiErrorModel = _handleError(error);
-  //   } else {
-  //     // default error
-  //     apiErrorModel = DataSource.DEFAULT.getFailure();
-  //   }
-  // }
-
   ErrorHandler.handle(dynamic error) {
     print("================ API ERROR DETECTED ================");
-    print(error); // السطر ده هيطبع لك السبب الحقيقي في الـ Terminal
+    print(error);
     print("====================================================");
 
     if (error is DioException) {
@@ -163,6 +145,39 @@ class ErrorHandler implements Exception {
       apiErrorModel = DataSource.DEFAULT.getFailure();
     }
   }
+}
+
+/// بيطلّع الرسالة من الـ response سواء كانت في المستوى الأول
+/// { "message": "..." }
+/// أو جوه error
+/// { "error": { "message": "..." } }
+/// أو جوه errors
+/// { "errors": { "email": ["..."] } }
+String _extractMessage(dynamic data) {
+  try {
+    if (data is Map) {
+      final message = data['message'];
+      if (message is String && message.isNotEmpty) return message;
+
+      final error = data['error'];
+      if (error is Map) {
+        final nested = error['message'] ?? error['header'];
+        if (nested is String && nested.isNotEmpty) return nested;
+      } else if (error is String && error.isNotEmpty) {
+        return error;
+      }
+
+      final errors = data['errors'];
+      if (errors is Map && errors.isNotEmpty) {
+        final first = errors.values.first;
+        if (first is List && first.isNotEmpty) return first.first.toString();
+        if (first != null) return first.toString();
+      }
+    } else if (data is String && data.isNotEmpty) {
+      return data;
+    }
+  } catch (_) {}
+  return ApiErrors.defaultError;
 }
 
 ApiErrorModel _handleError(DioException error) {
@@ -174,34 +189,22 @@ ApiErrorModel _handleError(DioException error) {
     case DioExceptionType.receiveTimeout:
       return DataSource.RECIEVE_TIMEOUT.getFailure();
     case DioExceptionType.badResponse:
-      if (error.response != null &&
-          error.response?.statusCode != null &&
-          error.response?.statusMessage != null) {
-        return ApiErrorModel.fromJson(error.response!.data);
-      } else {
-        return DataSource.DEFAULT.getFailure();
-      }
     case DioExceptionType.unknown:
-      if (error.response != null &&
-          error.response?.statusCode != null &&
-          error.response?.statusMessage != null) {
-        return ApiErrorModel.fromJson(error.response!.data);
-      } else {
-        return DataSource.DEFAULT.getFailure();
+      if (error.response != null) {
+        return ApiErrorModel(
+          code: error.response?.statusCode,
+          message: _extractMessage(error.response?.data),
+        );
       }
+      return DataSource.DEFAULT.getFailure();
     case DioExceptionType.cancel:
       return DataSource.CANCEL.getFailure();
-    // case DioExceptionType.connectionError:
-    //   return DataSource.DEFAULT.getFailure();
     case DioExceptionType.connectionError:
       return DataSource.NO_INTERNET_CONNECTION.getFailure();
     case DioExceptionType.badCertificate:
       return DataSource.DEFAULT.getFailure();
-    case DioExceptionType.badResponse:
-      return DataSource.DEFAULT.getFailure();
     case DioExceptionType.transformTimeout:
-      // TODO: Handle this case.
-      throw UnimplementedError();
+      return DataSource.DEFAULT.getFailure();
   }
 }
 

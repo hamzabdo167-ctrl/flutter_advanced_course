@@ -6,7 +6,7 @@ class DoctorsSpecialityListView extends StatelessWidget {
   final List<SpecializationsData?> specializationsDataList;
   const DoctorsSpecialityListView({
     super.key,
-    required this.specializationsDataList, required SpecializationsResponseModel specializationDataList,
+    required this.specializationsDataList,
   });
 
   @override
@@ -15,7 +15,7 @@ class DoctorsSpecialityListView extends StatelessWidget {
       height: 100,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: 8,
+        itemCount: specializationsDataList.length,
         itemBuilder: (context, index) {
           return DoctorsSpecialityListViewItem(
             itemIndex: index,
