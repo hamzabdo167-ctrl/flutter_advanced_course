@@ -13,12 +13,23 @@ class DoctorsListViewItem extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 20.h),
       child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: CircleAvatar(
-              radius: 30,
-              backgroundImage: AssetImage(
+          Container(
+            width: 80, // عرض المربع أو المستطيل
+            height: 80, // الطول (لو قد العرض هيبقى سكوير/مربع)
+            decoration: BoxDecoration(
+              color: Colors.blue, // لون الخلفية أو المكان اللي هيتحط فيه الصورة
+              borderRadius: BorderRadius.circular(
+                15,
+              ), // انحناء الزوايا (كل ما الرقم صغر، كل ما الزوايا بقت حادة أكتر)
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(
+                15,
+              ), // نفس الانحناء عشان لو جوّه صورة تقوس معاها
+              child: Image.asset(
                 'assets/images/doctor_placeholder.png',
+                fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
               ),
             ),
           ),
