@@ -131,6 +131,30 @@ extension DataSourceExtension on DataSource {
   }
 }
 
+class ApiErrorHandler {
+  static ApiErrorModel handle(dynamic error) {
+    if (error is DioException) {
+      switch (error.type) {
+        case DioExceptionType.connectionError:
+        case DioExceptionType.connectionTimeout:
+        case DioExceptionType.sendTimeout:
+        case DioExceptionType.receiveTimeout:
+          return ApiErrorModel(
+            message:
+                'No internet connection. Please check your network settings.',
+          );
+        default:
+          return ApiErrorModel(
+            message: 'An unexpected error occurred. Please try again later.',
+          );
+      }
+    }
+    return ApiErrorModel(
+      message: 'An unexpected error occurred. Please try again later.',
+    );
+  }
+}
+
 class ErrorHandler implements Exception {
   late ApiErrorModel apiErrorModel;
 
