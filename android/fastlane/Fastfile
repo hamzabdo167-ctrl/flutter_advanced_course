@@ -13,7 +13,7 @@ platform :android do
       android_artifact_type: "APK",
       android_artifact_path: "../build/app/outputs/flutter-apk/app-production-release.apk",
       testers: "hamzabdo167@gmail.com",
-      release_notes: "1.0.7"
+      release_notes: "Complete 80% of the app and fixed some bugs and work in Home Screen"
     )
   end
 
